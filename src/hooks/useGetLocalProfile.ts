@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
-import { useActiveWeb3React } from 'hooks'
+import { useEtherspotWallet } from 'hooks'
 
 const initialState = {
   profileLink: 'https://pancakeswap.finance/profile',
@@ -12,7 +12,7 @@ const initialState = {
  */
 const useGetLocalProfile = () => {
   const [profile, setProfile] = useState(initialState)
-  const { account } = useActiveWeb3React()
+  const { account } = useEtherspotWallet()
 
   useEffect(() => {
     if (account) {

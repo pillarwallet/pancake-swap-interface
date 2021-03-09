@@ -4,7 +4,7 @@ import { Button, Text } from '@pancakeswap-libs/uikit'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { AlertTriangle } from 'react-feather'
-import { useActiveWeb3React } from '../../hooks'
+import { useEtherspotWallet } from '../../hooks'
 import { useAllTokens } from '../../hooks/Tokens'
 import { getBscScanLink, shortenAddress } from '../../utils'
 import { ExternalLink } from '../Shared'
@@ -38,7 +38,7 @@ interface TokenWarningCardProps {
 }
 
 function TokenWarningCard({ token }: TokenWarningCardProps) {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useEtherspotWallet()
 
   const tokenSymbol = token?.symbol?.toLowerCase() ?? ''
   const tokenName = token?.name?.toLowerCase() ?? ''

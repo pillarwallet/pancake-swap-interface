@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { FixedSizeList } from 'react-window'
 import { ThemeContext } from 'styled-components'
 import AutoSizer from 'react-virtualized-auto-sizer'
-import { useActiveWeb3React } from '../../hooks'
+import { useEtherspotWallet } from '../../hooks'
 import { AppState } from '../../state'
 import { useAllTokens, useToken } from '../../hooks/Tokens'
 import { useSelectedListInfo } from '../../state/lists/hooks'
@@ -46,7 +46,7 @@ export function CurrencySearch({
   onChangeList,
 }: CurrencySearchProps) {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useEtherspotWallet()
   const theme = useContext(ThemeContext)
 
   const fixedList = useRef<FixedSizeList>()

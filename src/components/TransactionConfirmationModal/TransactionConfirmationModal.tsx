@@ -1,6 +1,6 @@
 import React from 'react'
 import Modal from '../Modal'
-import { useActiveWeb3React } from '../../hooks'
+import { useEtherspotWallet } from '../../hooks'
 import ConfirmationPendingContent from './ConfirmationPendingContent'
 import TransactionSubmittedContent from './TransactionSubmittedContent'
 
@@ -21,7 +21,7 @@ const TransactionConfirmationModal = ({
   pendingText,
   content
 }: ConfirmationModalProps) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useEtherspotWallet()
 
   if (!chainId) return null
 

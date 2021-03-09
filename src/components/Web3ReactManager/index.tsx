@@ -4,7 +4,11 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
 import { network } from '../../connectors'
-import { useEagerConnect, useInactiveListener } from '../../hooks'
+import {
+  useEtherspotWallet,
+  useEagerConnect,
+  useInactiveListener,
+} from '../../hooks';
 import { NetworkContextName } from '../../constants'
 import Loader from '../Loader'
 

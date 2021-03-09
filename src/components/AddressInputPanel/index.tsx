@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 import useENS from '../../hooks/useENS'
-import { useActiveWeb3React } from '../../hooks'
+import { useEtherspotWallet } from '../../hooks'
 import { ExternalLink } from '../Shared'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
@@ -78,7 +78,7 @@ export default function AddressInputPanel({
   // triggers whenever the typed value changes
   onChange: (value: string) => void
 }) {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useEtherspotWallet()
 
   const { address, loading, name } = useENS(value)
 

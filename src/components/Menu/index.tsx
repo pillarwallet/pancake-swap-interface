@@ -8,9 +8,10 @@ import useGetPriceData from 'hooks/useGetPriceData'
 import useGetLocalProfile from 'hooks/useGetLocalProfile'
 import { connectorsByName } from 'connectors'
 import links from './config'
+import { useEtherspotWallet } from '../../hooks';
 
 const Menu: React.FC = (props) => {
-  const { account, activate, deactivate } = useWeb3React()
+  const { account, activate, deactivate } = useEtherspotWallet()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const priceData = useGetPriceData()

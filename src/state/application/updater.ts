@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useActiveWeb3React } from '../../hooks'
+import { useEtherspotWallet } from '../../hooks'
 import useDebounce from '../../hooks/useDebounce'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
 
 export default function Updater(): null {
-  const { library, chainId } = useActiveWeb3React()
+  const { library, chainId } = useEtherspotWallet()
   const dispatch = useDispatch()
 
   const windowVisible = useIsWindowVisible()

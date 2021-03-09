@@ -4,10 +4,39 @@ import { connectorLocalStorageKey } from '@pancakeswap-libs/uikit'
 import { useWeb3React as useWeb3ReactCore } from '@web3-react/core'
 // eslint-disable-next-line import/no-unresolved
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
-import { useEffect, useState } from 'react'
+import {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { isMobile } from 'react-device-detect'
 import { injected } from '../connectors'
 import { NetworkContextName } from '../constants'
+// eslint-disable-next-line import/no-cycle
+import { EtherspotContext } from '../contexts/EtherspotContext';
+
+export const useEtherspotWallet = (): {
+  library: Web3Provider,
+  chainId: number,
+  account: string,
+  deactivate,
+  activate,
+  active: boolean,
+  error,
+} => {
+  const etherspotContext = useContext(EtherspotContext)
+
+  if (etherspotContext === null) {
+    throw new Error(
+      'useEtherspotWallet() can only be used inside of <EtherspotContextProvider />, ' +
+      'please declare it at a higher level.',
+    )
+  }
+
+  const { etherspot } = etherspotContext
+
+  return etherspot;
+}
 
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & { chainId?: ChainId } {
   const context = useWeb3ReactCore<Web3Provider>()
@@ -16,17 +45,20 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & 
 }
 
 export function useEagerConnect() {
-  const { activate, active } = useWeb3ReactCore() // specifically using useWeb3ReactCore because of what this hook does
+  const { activate, active } = useEtherspotWallet()
+
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
       const hasSignedIn = window.localStorage.getItem(connectorLocalStorageKey)
       if (isAuthorized && hasSignedIn) {
+        // @ts-ignore
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })
       } else if (isMobile && window.ethereum && hasSignedIn) {
+        // @ts-ignore
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })

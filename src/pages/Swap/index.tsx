@@ -19,7 +19,7 @@ import SyrupWarningModal from 'components/SyrupWarningModal'
 import ProgressSteps from 'components/ProgressSteps'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from 'constants/index'
-import { useActiveWeb3React } from 'hooks'
+import { useEtherspotWallet } from 'hooks'
 import { useCurrency } from 'hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
 import { useSwapCallback } from 'hooks/useSwapCallback'
@@ -60,7 +60,7 @@ const Swap = () => {
     setSyrupTransactionType('')
   }, [])
 
-  const { account } = useActiveWeb3React()
+  const { account } = useEtherspotWallet()
   const theme = useContext(ThemeContext)
 
   const [isExpertMode] = useExpertModeManager()

@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { AlertCircle, CheckCircle } from 'react-feather'
 import { Text } from '@pancakeswap-libs/uikit'
 import styled, { ThemeContext } from 'styled-components'
-import { useActiveWeb3React } from '../../hooks'
+import { useEtherspotWallet } from '../../hooks'
 import { getBscScanLink } from '../../utils'
 import { ExternalLink } from '../Shared'
 import { AutoColumn } from '../Column'
@@ -21,7 +21,7 @@ export default function TransactionPopup({
   success?: boolean
   summary?: string
 }) {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useEtherspotWallet()
 
   const theme = useContext(ThemeContext)
 
