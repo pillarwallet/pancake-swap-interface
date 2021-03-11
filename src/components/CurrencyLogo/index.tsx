@@ -5,6 +5,7 @@ import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
 import CoinLogo from '../pancake/CoinLogo'
+import { useEtherspotWallet } from '../../hooks';
 
 const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/${address}/logo.png`
@@ -25,10 +26,12 @@ export default function CurrencyLogo({
   currency,
   size = '24px',
   style,
+  chainId,
 }: {
   currency?: Currency
   size?: string
   style?: React.CSSProperties
+  chainId?: number
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
 
@@ -46,7 +49,7 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency === ETHER) {
-    return <StyledBnbLogo src="/images/coins/bnb.png" size={size} style={style} />
+    return <StyledBnbLogo src={`/images/coins/${chainId === 1 ? 'eth' : 'bnb'}.png`} size={size} style={style} />
   }
 
   return (currency as any)?.symbol ? (

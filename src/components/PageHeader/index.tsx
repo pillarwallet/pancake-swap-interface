@@ -8,6 +8,8 @@ interface PageHeaderProps {
   title: ReactNode
   description?: ReactNode
   children?: ReactNode
+  hideSettings?: boolean
+  hideHistory?: boolean
 }
 
 const HistoryIcon = () => (
@@ -28,7 +30,7 @@ const Details = styled.div`
   flex: 1;
 `
 
-const PageHeader = ({ title, description, children }: PageHeaderProps) => {
+const PageHeader = ({ title, description, children, hideSettings, hideHistory }: PageHeaderProps) => {
   const [onPresentSettings] = useModal(<SettingsModal />)
   const [onPresentRecentTransactions] = useModal(<RecentTransactionsModal />)
 
@@ -43,12 +45,16 @@ const PageHeader = ({ title, description, children }: PageHeaderProps) => {
             </Text>
           )}
         </Details>
-        <IconButton variant="text" onClick={onPresentSettings} title="Settings">
-          <CogIcon width="24px" color="currentColor" />
-        </IconButton>
-        <IconButton variant="text" onClick={onPresentRecentTransactions} title="Recent transactions">
-          <HistoryIcon />
-        </IconButton>
+        {!hideSettings && (
+          <IconButton variant="text" onClick={onPresentSettings} title="Settings">
+            <CogIcon width="24px" color="currentColor" />
+          </IconButton>
+        )}
+        {!hideHistory && (
+          <IconButton variant="text" onClick={onPresentRecentTransactions} title="Recent transactions">
+            <HistoryIcon />
+          </IconButton>
+        )}
       </Flex>
       {children && <Text mt="16px">{children}</Text>}
     </StyledPageHeader>

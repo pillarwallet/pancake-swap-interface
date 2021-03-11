@@ -26,6 +26,7 @@ import { useWeb3React } from '@web3-react/core';
 import {
   useActiveWeb3React,
 } from '../hooks';
+import { NETWORK_CHAIN_ID } from '../connectors';
 
 class LocalSessionStorage extends SessionStorage {
   setSession = async (walletAddress: string, session: StoredSession) => {
@@ -122,15 +123,13 @@ class EtherspotRpcProvider extends JsonRpcProvider {
   }
 }
 
-const sdkChainId: number = parseInt(process.env.REACT_APP_CHAIN_ID || '56');
-
 export const EtherspotContext = React.createContext(null)
 
 export const EtherspotContextProvider = ({ children }) => {
   const [account, setAccount] = useState<string | null>(null)
   const [etherspotWalletProvider, setEtherspotWalletProvider] = useState<MetaMaskWalletProvider | WalletConnectWalletProvider | null>(null)
 
-  const { activate: activateWeb3, deactivate: deactivateWeb3, chainId: web3ChainId } = useWeb3React()
+  const { activate: activateWeb3, deactivate: deactivateWeb3, chainId: web3ChainId, account: web3Account } = useWeb3React()
   const { library: activeWeb3Library } = useActiveWeb3React();
 
   const etherspotSdk = useMemo(() => {
@@ -138,7 +137,7 @@ export const EtherspotContextProvider = ({ children }) => {
 
     const { Bsc, BscTest } = EtherspotNetworkNames;
     const { MainNets, TestNets } = EnvNames;
-    const networkName = sdkChainId === 56 ? Bsc : BscTest;
+    const networkName = NETWORK_CHAIN_ID === 56 ? Bsc : BscTest;
     const envName = networkName === Bsc ? MainNets : TestNets;
 
     return new EtherspotSdk(etherspotWalletProvider, {
@@ -150,7 +149,7 @@ export const EtherspotContextProvider = ({ children }) => {
     });
   }, [etherspotWalletProvider])
 
-  const web3ProviderOnBscChain = [56, 97].includes(web3ChainId || 0)
+  const web3ProviderOnBscChain = [56, 97].includes(web3ChainId || 56)
 
   const activate = useCallback(async (connector) => {
     setEtherspotWalletProvider(null)
@@ -180,8 +179,10 @@ export const EtherspotContextProvider = ({ children }) => {
           setAccount(address)
         })
         .catch(() => null)
+    } else if (web3Account) {
+      setAccount(web3Account)
     }
-  }, [etherspotSdk, etherspotWalletProvider])
+  }, [etherspotSdk, etherspotWalletProvider, web3Account])
 
   const deactivate = useCallback(() => {
     deactivateWeb3()
@@ -207,8 +208,9 @@ export const EtherspotContextProvider = ({ children }) => {
     account,
     deactivate,
     activate,
-    active: !web3ProviderOnBscChain,
-  }), [account, provider, activate, deactivate, web3ProviderOnBscChain])
+    active: true,
+    chainId: NETWORK_CHAIN_ID,
+  }), [account, provider, activate, deactivate])
 
   // @ts-ignore
   return <EtherspotContext.Provider value={{ etherspot }}>{children}</EtherspotContext.Provider>

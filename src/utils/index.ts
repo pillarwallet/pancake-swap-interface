@@ -39,6 +39,23 @@ export function getBscScanLink(chainId: ChainId, data: string, type: 'transactio
   }
 }
 
+export function getEtherscanLink(data: string, type: 'transaction' | 'token' | 'address'): string {
+  const prefix = `https://etherscan.io`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/token/${data}`
+    }
+    case 'address':
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+
 // shorten the checksummed version of the input address to have 0x + 4 characters at start and end
 export function shortenAddress(address: string, chars = 4): string {
   const parsed = isAddress(address)
